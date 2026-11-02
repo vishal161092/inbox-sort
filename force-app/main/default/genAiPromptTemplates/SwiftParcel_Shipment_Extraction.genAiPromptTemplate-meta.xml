@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>fM/PkEeFNAmpb6itQEo6rRqOQ7LoZe5Zx6MR0DMmsVM=_2</activeVersionIdentifier>
+    <description>Extracts SwiftParcel shipment details (name, mobile, AWB, email, status) from an inbound email and its attached image. Returns a JSON array - one object per shipment (one for a tracking screenshot, N for a multi-row sheet).</description>
+    <developerName>SwiftParcel_Shipment_Extraction</developerName>
+    <masterLabel>SwiftParcel Shipment Extraction</masterLabel>
+    <overridable>false</overridable>
+    <templateVersions>
+        <content>You are a data-extraction assistant for SwiftParcel, a courier and logistics company. You are given a customer support email and, when available, an attached image file. The image may be either (a) a single shipment tracking screenshot, or (b) a spreadsheet or table listing many shipments, one per row.
+
+Email subject: {!$Input:subject}
+Email description: {!$Input:description}
+
+Carefully read BOTH the email text above AND the attached image. Extract every distinct shipment you can identify from the email and/or the image.
+
+For EACH shipment, produce a JSON object with exactly these keys:
+- &quot;name&quot;: the customer or consignee name if present, otherwise an empty string.
+- &quot;mobileNumber&quot;: the contact mobile or phone number if present, otherwise an empty string.
+- &quot;awbNumber&quot;: the AWB, shipment, tracking, consignment, or reference number exactly as shown (for example SWP000567890 or I49826935), otherwise an empty string.
+- &quot;email&quot;: the customer email address if present, otherwise an empty string.
+- &quot;description&quot;: a short one-line summary of this shipment current status or issue (for example &quot;In Transit - delivery delayed, arrived at Pune Hub&quot; or &quot;Undelivered - reattempt requested, COD&quot;).
+
+Output rules:
+- Respond with ONLY a valid JSON array and nothing else. No prose, no markdown, no code fences.
+- If you find a single shipment (for example a tracking screenshot), return an array containing exactly one object.
+- If the image is a table with multiple shipment rows, return one object per row, preserving each AWB number exactly as shown.
+- If a value is not visible anywhere, use an empty string. Never invent or guess data.
+
+Example of the required output format:
+[{&quot;name&quot;:&quot;&quot;,&quot;mobileNumber&quot;:&quot;&quot;,&quot;awbNumber&quot;:&quot;SWP000567890&quot;,&quot;email&quot;:&quot;&quot;,&quot;description&quot;:&quot;In Transit - delivery delayed&quot;}]</content>
+        <inputs>
+            <apiName>subject</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>subject</masterLabel>
+            <referenceName>Input:subject</referenceName>
+            <required>false</required>
+        </inputs>
+        <inputs>
+            <apiName>description</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>description</masterLabel>
+            <referenceName>Input:description</referenceName>
+            <required>false</required>
+        </inputs>
+        <inputs>
+            <apiName>File</apiName>
+            <definition>SOBJECT://ContentDocument</definition>
+            <masterLabel>File</masterLabel>
+            <referenceName>Input:File</referenceName>
+            <required>false</required>
+        </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
+        <primaryModel>sfdc_ai__DefaultGPT4Omni</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>fM/PkEeFNAmpb6itQEo6rRqOQ7LoZe5Zx6MR0DMmsVM=_2</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Parent_Case__c</fullName>
+    <label>Parent Case</label>
+    <description>Marked true when this Case is the parent (inbound request) of one or more shipment child Cases created from a multi-row attachment (UseCase 2).</description>
+    <type>Checkbox</type>
+    <defaultValue>false</defaultValue>
+</CustomField>
